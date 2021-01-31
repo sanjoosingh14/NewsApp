@@ -10,27 +10,39 @@ import UIKit
 
 class NewsListViewController: UIViewController {
     var viewModel = NewsListViewModel()
-
+    
     @IBOutlet weak var tableview_news: UITableView!
+    @IBOutlet weak var loader_view: UIActivityIndicatorView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         self.title = "US Top Headlines"
+        loader_view.alpha = 1
+        loader_view.startAnimating()
+        self.view.bringSubviewToFront(loader_view)
+
         self.setUpTableViewCell()
         self.startBinding()
         viewModel.fetchNewsFromApi()
     }
-    
     
     //MARK:- Setup Views
     private func setUpTableViewCell(){
         tableview_news.delegate = self
         tableview_news.dataSource = self
         tableview_news.register(NewsListImageViewTableViewCell.self, forCellReuseIdentifier: String(describing: NewsListImageViewTableViewCell.self))
+        self.tableview_news.alpha = 0
     }
+    
     func startBinding() {
         viewModel.newsDataSource.addObserver({ [weak self] _ in
             self?.tableview_news?.reloadData()
+            if self?.viewModel.newsDataSource.value?.count ?? 0 > 0{
+                self?.tableview_news.alpha = 1
+                self?.loader_view.alpha = 0
+                self?.loader_view.stopAnimating()
+            }
         })
     }
 }

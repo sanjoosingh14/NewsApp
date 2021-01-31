@@ -18,6 +18,7 @@ protocol NewsDetailDataSource {
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell
 }
 class NewsDetailViewModel{
+    
     var newsDataSource = Observable<[NewsDetailDataSource]?>(value: [])
     var news:News?
     init(with news:News){
@@ -25,24 +26,21 @@ class NewsDetailViewModel{
         self.news = news
     }
     func fetchcomments(){
-    if let url = URL(string: "https://cn-news-info-api.herokuapp.com/comments/_"){
-            NewsAPI.shared.getCommentsCount(with: url) { [weak self](comment) in
+        NewsRepositoryImp.shared.getCommentsCount{ [weak self](comment) in
                 if let data = self?.news{
                     data.comment = comment
                     self?.newsDataSource.value = self?.createDetailDataSource(newsList: [data])
                 }
             }
-        }
     }
     func fetchlikes(){
-      if let url = URL(string: "https://cn-news-info-api.herokuapp.com/likes/_"){
-              NewsAPI.shared.getLikesCount(with: url) { [weak self](like) in
+        NewsRepositoryImp.shared.getLikesCount { [weak self](like) in
                   if let data = self?.news{
                       data.like = like
                       self?.newsDataSource.value = self?.createDetailDataSource(newsList: [data])
                   }
               }
-          }
+        
     }
     func showData(){
         if let news = self.news{

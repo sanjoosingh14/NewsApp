@@ -41,19 +41,27 @@
                                     <outlet property="prefetchDataSource" destination="8bC-Xf-vdC" id="wzj-3d-Tdn"/>
                                 </connections>
                             </tableView>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="Ioh-aQ-8ME">
+                                <rect key="frame" x="188.5" y="429.5" width="37" height="37"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="color" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </activityIndicatorView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
                             <constraint firstAttribute="bottom" secondItem="ebV-lc-ZdN" secondAttribute="bottom" id="Cqy-9y-RPV"/>
                             <constraint firstItem="ebV-lc-ZdN" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="H2v-6r-ijm"/>
+                            <constraint firstItem="Ioh-aQ-8ME" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="i93-nX-znX"/>
                             <constraint firstItem="ebV-lc-ZdN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="tEP-Re-ytf"/>
                             <constraint firstItem="ebV-lc-ZdN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="vhf-Rj-348"/>
+                            <constraint firstItem="Ioh-aQ-8ME" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="wxs-jW-zfl"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                     <navigationItem key="navigationItem" id="CTM-Ck-Is9"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
+                        <outlet property="loader_view" destination="Ioh-aQ-8ME" id="kUs-zp-RaJ"/>
                         <outlet property="tableview_news" destination="ebV-lc-ZdN" id="qpO-yH-m7G"/>
                     </connections>
                 </viewController>
@@ -95,7 +103,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5YI-7f-z3e" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="316" y="72"/>
+            <point key="canvasLocation" x="-410" y="-202"/>
         </scene>
     </scenes>
 </document>

@@ -34,14 +34,13 @@ class NewsListViewModel{
     var newsDataSource = Observable<[NewsListDataSource]?>(value: [])
     
     func fetchNewsFromApi(){
-    if let url = URL(string: "https://newsapi.org/v2/top-headlines?country=us&apiKey=2ed7996e7c844109abdca49cd1623719"){
-            NewsAPI.shared.getNews(with: url) { [weak self](news) in
+            NewsRepositoryImp.shared.fetchNews { [weak self](news) in
                 print(news)
                 if let data = news{
                     self?.newsDataSource.value = self?.createChatDataSource(newsList: data)
                 }
             }
-        }
+        
     }
     func createChatDataSource(newsList: [News])-> [NewsListDataSource]{
           var newsDataSource = [NewsListDataSource]()
