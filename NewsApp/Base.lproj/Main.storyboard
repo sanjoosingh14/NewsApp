@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="sFR-Th-juu">
+    <device id="retina6_1" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--US Top Headlines-->
+        <scene sceneID="ysg-yc-R0W">
+            <objects>
+                <navigationController title="US Top Headlines" id="sFR-Th-juu" sceneMemberID="viewController">
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Z0d-zN-4XH">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="fUl-Hv-f1Y"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IZ3-rl-Tys" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-2148" y="-202"/>
+        </scene>
+        <!--US Top Headlines-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController storyboardIdentifier="NewsListViewController" title="US Top Headlines" id="BYZ-38-t0r" customClass="NewsListViewController" customModule="NewsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="ebV-lc-ZdN">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="8bC-Xf-vdC" id="kHf-40-GrX"/>
+                                    <outlet property="delegate" destination="8bC-Xf-vdC" id="SBC-1d-DkW"/>
+                                    <outlet property="prefetchDataSource" destination="8bC-Xf-vdC" id="wzj-3d-Tdn"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ebV-lc-ZdN" secondAttribute="bottom" id="Cqy-9y-RPV"/>
+                            <constraint firstItem="ebV-lc-ZdN" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="H2v-6r-ijm"/>
+                            <constraint firstItem="ebV-lc-ZdN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="tEP-Re-ytf"/>
+                            <constraint firstItem="ebV-lc-ZdN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="vhf-Rj-348"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="CTM-Ck-Is9"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="tableview_news" destination="ebV-lc-ZdN" id="qpO-yH-m7G"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1362" y="-202"/>
+        </scene>
+        <!--News Detail-->
+        <scene sceneID="oc7-ph-eRn">
+            <objects>
+                <viewController storyboardIdentifier="NewsDetialViewController" title="News Detail" id="bmv-LZ-0iG" customClass="NewsDetialViewController" customModule="NewsApp" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="iWm-tj-aNi">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="f9L-89-XOr">
+                                <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="bmv-LZ-0iG" id="p1G-Wp-oKD"/>
+                                    <outlet property="delegate" destination="bmv-LZ-0iG" id="QJ1-6P-DCk"/>
+                                    <outlet property="prefetchDataSource" destination="bmv-LZ-0iG" id="PET-FT-Nh8"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="f9L-89-XOr" firstAttribute="trailing" secondItem="QwK-ex-kW7" secondAttribute="trailing" id="QOS-IW-OdX"/>
+                            <constraint firstAttribute="bottom" secondItem="f9L-89-XOr" secondAttribute="bottom" id="SlW-hZ-YuZ"/>
+                            <constraint firstItem="f9L-89-XOr" firstAttribute="top" secondItem="iWm-tj-aNi" secondAttribute="top" id="WqR-1y-jwq"/>
+                            <constraint firstItem="f9L-89-XOr" firstAttribute="leading" secondItem="QwK-ex-kW7" secondAttribute="leading" id="gNr-0s-aa9"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="QwK-ex-kW7"/>
+                    </view>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <connections>
+                        <outlet property="tableview_detail" destination="f9L-89-XOr" id="fMR-Y5-cZp"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5YI-7f-z3e" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="316" y="72"/>
+        </scene>
+    </scenes>
+</document>
