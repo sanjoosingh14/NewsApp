@@ -8,8 +8,6 @@ enum newsDetialCellType {
     case additionalInfo
 }
 
-
-
 protocol NewsDetailDataSource {
     var cellType: newsDetialCellType { get }
     var cellIdentifier: String { get }
@@ -18,23 +16,34 @@ protocol NewsDetailDataSource {
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell
 }
 class NewsDetailViewModel{
-    
+    let newsRepository: NewsRepository
     var newsDataSource = Observable<[NewsDetailDataSource]?>(value: [])
     var news:News?
-    init(with news:News){
+    
+    init(newsRepository: NewsRepository = NewsRepositoryImp()) {
+        self.newsRepository = newsRepository
+    }
+    convenience init(with news:News){
         // display data with previous news data firstly.
+        self.init()
         self.news = news
     }
+    
+    //MARK:- Fetch comments
+
     func fetchcomments(){
-        NewsRepositoryImp.shared.getCommentsCount{ [weak self](comment) in
+        self.newsRepository.getCommentsCount{ [weak self](comment) in
                 if let data = self?.news{
                     data.comment = comment
                     self?.newsDataSource.value = self?.createDetailDataSource(newsList: [data])
                 }
             }
     }
+    
+    //MARK:- Fetch likes
+
     func fetchlikes(){
-        NewsRepositoryImp.shared.getLikesCount { [weak self](like) in
+       self.newsRepository.getLikesCount { [weak self](like) in
                   if let data = self?.news{
                       data.like = like
                       self?.newsDataSource.value = self?.createDetailDataSource(newsList: [data])
@@ -42,6 +51,7 @@ class NewsDetailViewModel{
               }
         
     }
+    
     func showData(){
         if let news = self.news{
             self.newsDataSource.value = self.createDetailDataSource(newsList: [news])

@@ -1,10 +1,3 @@
-//
-//  NewsListImageTypeTableViewCell.swift
-//  NewsApp
-//
-//  Created by Miraah on 30/01/21.
-//  Copyright © 2021 Self. All rights reserved.
-//
 
 import UIKit
 import SDWebImage
@@ -108,9 +101,8 @@ class NewsListImageViewTableViewCell: UITableViewCell, CellConfigurable{
         newsTitle.text = self.viewModel?.newsModel.title
 
         if let url = URL(string: imgUrl){
-           // use dispach queue to download image
-           self.newstImgView.image = nil
-            self.newstImgView.sd_setImage(with: url , placeholderImage: UIImage(named:"Placeholder"))
+         self.newstImgView.image = nil
+         self.newstImgView.sd_setImage(with: url , placeholderImage: UIImage(named:"Placeholder"))
         
         }
      

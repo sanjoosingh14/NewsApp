@@ -31,18 +31,25 @@ protocol CellConfigurable {
 }
 
 class NewsListViewModel{
+    let newsRepository: NewsRepository
     var newsDataSource = Observable<[NewsListDataSource]?>(value: [])
+
+    init( newsRepository: NewsRepository = NewsRepositoryImp()) {
+        self.newsRepository = newsRepository
+    }
     
+    //MARK:- Fetch news
+
     func fetchNewsFromApi(){
-            NewsRepositoryImp.shared.fetchNews { [weak self](news) in
-                print(news)
+            self.newsRepository.fetchNews { [weak self](news) in
                 if let data = news{
-                    self?.newsDataSource.value = self?.createChatDataSource(newsList: data)
+                    self?.newsDataSource.value = self?.createNewsDataSource(newsList: data)
                 }
             }
         
     }
-    func createChatDataSource(newsList: [News])-> [NewsListDataSource]{
+    
+    func createNewsDataSource(newsList: [News])-> [NewsListDataSource]{
           var newsDataSource = [NewsListDataSource]()
           for news in newsList {
             if let dataSource = makeNewsDataSourceElement(news: news) {

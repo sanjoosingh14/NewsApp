@@ -7,13 +7,12 @@ enum FetchArticlesError: Error {
 
 typealias FetchArticlesResult = (_ result: Result<[News], FetchArticlesError>) -> Void
 
-protocol NewsRepository {
+ protocol NewsRepository {
     func fetchNews(completion: @escaping ([News]?) -> ())
     func getLikesCount(completion: @escaping (Int?) -> ())
     func getCommentsCount(completion: @escaping (Int?) -> ())
 }
 class NewsRepositoryImp: NewsRepository {
-    static let shared = NewsRepositoryImp()
 
     func getLikesCount(completion: @escaping (Int?) -> ()) {
          guard let url = NewsApiFactoryImpl().createLikeUrl().url else {

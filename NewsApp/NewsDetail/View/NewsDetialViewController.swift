@@ -8,11 +8,9 @@ class NewsDetialViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        
         self.setUpTableViewCell()
         self.startBinding()
         self.viewModel?.showData()
-        //hit api for like and comment
         self.viewModel?.fetchcomments()
         self.viewModel?.fetchlikes()
     }
@@ -26,6 +24,7 @@ class NewsDetialViewController: UIViewController {
         tableview_detail.register(AdditionalInfoTableViewCell.self, forCellReuseIdentifier: String(describing: AdditionalInfoTableViewCell.self))
         tableview_detail.register(ImageTableViewCell.self, forCellReuseIdentifier: String(describing: ImageTableViewCell.self))
     }
+    
     func startBinding() {
         viewModel?.newsDataSource.addObserver({ [weak self] _ in
             self?.tableview_detail?.reloadData()
