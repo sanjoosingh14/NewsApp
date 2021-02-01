@@ -104,7 +104,7 @@ class NewsListImageViewTableViewCell: UITableViewCell, CellConfigurable{
         newsDescription.numberOfLines = 4
         self.layoutIfNeeded()
         newsDescription.text = self.viewModel?.newsModel.description
-        newsAuthor.text = self.viewModel?.newsModel.author
+        newsAuthor.text = self.viewModel?.published
         newsTitle.text = self.viewModel?.newsModel.title
 
         if let url = URL(string: imgUrl){

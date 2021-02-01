@@ -33,4 +33,13 @@ struct NewsListImageViewModel:NewsListDataSource {
         }
         return UITableViewCell()
     }
+    var published: String {
+        if let publishdate = newsModel.publishedAt, let publishedDate = publishdate.toDate(withFormat: "yyyy-MM-dd'T'HH:mm:ssZ"){
+            let published = publishedDate.getFormattedDate(format: "HH:mm E, d MMM y")
+            return "\(published) by \(newsModel.author ?? "")"
+        }
+        else{
+            return "\(newsModel.author ?? "")"
+        }
+    }
 }

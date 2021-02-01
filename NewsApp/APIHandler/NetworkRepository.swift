@@ -1,12 +1,12 @@
 
 import Foundation
 
-protocol URLSessionProtocol {
+public protocol URLSessionProtocol {
     func dataTask(with url: URL, completionHandler: @escaping (Data?, URLResponse?, Error?) -> Void) -> URLSessionDataTask
 }
 extension URLSession: URLSessionProtocol {}
 
-typealias FetchRequestResult = (_ result: Result<(HTTPURLResponse, Data), Error>) -> Void
+typealias FetchRequestResult = (_ result: Result<(Data), Error>) -> Void
 
 protocol NetworkRepository {
     func fetchRequest(_ url: URL, result: @escaping FetchRequestResult)
@@ -26,12 +26,12 @@ struct NetworkRepositoryImpl:NetworkRepository{
                 result(.failure(error))
                 return
             }
-            guard let urlResponse = urlResponse as? HTTPURLResponse, let data = data else {
+            guard let data = data else {
                 let error = NSError(domain: "error", code: 0, userInfo: nil)
                 result(.failure(error))
                 return
             }
-            result(.success((urlResponse, data)))
+            result(.success(data))
         }
         dataTask.resume()
     }

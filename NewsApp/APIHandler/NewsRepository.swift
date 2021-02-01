@@ -23,7 +23,7 @@ class NewsRepositoryImp: NewsRepository {
          NetworkRepositoryImpl().fetchRequest(url) { networkResult in
          switch networkResult {
             case .success(let response):
-                let (urlResponse, data) = response
+                let data = response
                  guard let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any]
                     else {
                       completion(nil)
@@ -52,7 +52,7 @@ class NewsRepositoryImp: NewsRepository {
          NetworkRepositoryImpl().fetchRequest(url) { networkResult in
          switch networkResult {
             case .success(let response):
-                let (urlResponse, data) = response
+                let  data = response
                  guard let json = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers) as? [String: Any]
                     else {
                       completion(nil)
@@ -82,7 +82,7 @@ class NewsRepositoryImp: NewsRepository {
          NetworkRepositoryImpl().fetchRequest(url) { networkResult in
          switch networkResult {
             case .success(let response):
-                let (urlResponse, data) = response
+                let  data = response
                 let newsList = try? JSONDecoder().decode(NewsList.self, from: data)
                 if let news = newsList?.articles{
                     completion(news)

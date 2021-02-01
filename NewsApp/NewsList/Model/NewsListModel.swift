@@ -9,5 +9,6 @@ class News: Decodable {
     let author:String?
     var comment:Int?
     var like:Int?
+    let publishedAt: String?
 }
 
