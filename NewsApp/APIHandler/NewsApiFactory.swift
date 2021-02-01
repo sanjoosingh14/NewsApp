@@ -25,14 +25,14 @@ struct NewsApiFactoryImpl: NewsApiFactory {
            var components = URLComponents()
            components.scheme = "https"
            components.host = "cn-news-info-api.herokuapp.com"
-           components.path = "comments/_"
+           components.path = "/comments/_"
            return components
     }
     func createLikeUrl() -> URLComponents {
               var components = URLComponents()
               components.scheme = "https"
               components.host = "cn-news-info-api.herokuapp.com"
-              components.path = "likes/_"
+              components.path = "/likes/_"
               return components
     }
 }

@@ -29,7 +29,7 @@ class NewsRepositoryImp: NewsRepository {
                       completion(nil)
                       return
                   }
-                  if let comment =  json["comments"] as? Int{
+                  if let comment =  json["likes"] as? Int{
                       completion(comment)
                       return
                   }
