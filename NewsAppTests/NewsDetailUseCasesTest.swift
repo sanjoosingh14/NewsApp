@@ -10,17 +10,42 @@ class NewsDetailUseCasesTest: XCTestCase {
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
+    
+    func test_fetchLikeWithWrongUrl_fail(){
+        let newUrlStr = "https://cn-news-info-api.herokuapp.com///likes/_"
+        let sut = DefaultNewsDetailUseCase(NewsDetailRepository(NetworkRouter()))
+        let request = NewsEndPoint(newUrlStr)!
+        XCTAssertNotNil(request)
+        let newsExpectation = expectation(description: "Fetching like count")
+        sut.executeLikes(request) { (result) in
+            switch result {
+            case .failure(let error):
+                XCTAssertEqual(error.localizedDescription, NetworkError.apiError.localizedDescription , "Api issue")
+            case .success(let newsModel):
+                XCTAssertNil(newsModel)
+            }
+            newsExpectation.fulfill()
+        }
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
-    func testPerformanceExample() {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func test_fetchLikeWithValidUrl_success(){
+        let newUrlStr = "https://cn-news-info-api.herokuapp.com/likes/_"
+        let sut = DefaultNewsDetailUseCase(NewsDetailRepository(NetworkRouter()))
+        let request = NewsEndPoint(newUrlStr)!
+        XCTAssertNotNil(request)
+        let photoExpectation = expectation(description: "Fetching like count")
+        sut.executeLikes(request) { (result) in
+            switch result {
+            case .failure(let error):
+                XCTAssertNil(error)
+            case .success(let like):
+                XCTAssertNotNil(like)
+                XCTAssertTrue(like.likes ?? 0 > 0)
+            }
+            photoExpectation.fulfill()
         }
+        waitForExpectations(timeout: 5, handler: nil)
     }
 
 }

@@ -1,10 +1,3 @@
-//
-//  PhotosGridUseCase.swift
-//  AssignmentForTimesInternet
-//
-//  Created by IndianRenters on 08/02/21.
-//  Copyright © 2021 Alok. All rights reserved.
-//
 
 import Foundation
 

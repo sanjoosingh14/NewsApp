@@ -68,11 +68,6 @@ class Router : NSObject, RouterProtocol {
     
     func pop(_ isAnimated: Bool) {
         navigationController.popViewController(animated: isAnimated)
-        guard let previousController = navigationController.transitionCoordinator?.viewController(forKey: .from),
-            !navigationController.viewControllers.contains(previousController) else {
-            return
-        }
-        executeClosure(previousController)
     }
     
     func popToRoot(_ isAnimated: Bool) {
