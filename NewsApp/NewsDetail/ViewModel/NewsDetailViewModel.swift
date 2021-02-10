@@ -16,60 +16,78 @@ protocol NewsDetailDataSource {
     func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell
 }
 class NewsDetailViewModel{
-    let newsRepository: NewsRepository
+    
+    var isLoader = Observable<Bool>(value: true)
     var newsDataSource = Observable<[NewsDetailDataSource]?>(value: [])
-    var news:News?
-    
-    init(newsRepository: NewsRepository = NewsRepositoryImp()) {
-        self.newsRepository = newsRepository
-    }
-    convenience init(with news:News){
-        // display data with previous news data firstly.
-        self.init()
-        self.news = news
-    }
-    
-    //MARK:- Fetch comments
+    private var news:News
+    private var commentCount:Int = 0
+    private var likeCount:Int = 0
 
-    func fetchcomments(){
-        self.newsRepository.getCommentsCount{ [weak self](comment) in
-                if let data = self?.news{
-                    data.comment = comment
-                    self?.newsDataSource.value = self?.createDetailDataSource(newsList: [data])
+    private let photoLoader: PhotoDownloader
+    private let newsUseCase: NewsDetailUseCase
+    private let likeUrl = "https://cn-news-info-api.herokuapp.com/likes/_"
+    private let commentUrl = "https://cn-news-info-api.herokuapp.com/comments/_"
+
+    init(_ newsUseCase: NewsDetailUseCase, downloader: PhotoDownloader, newsDetail: News) {
+        self.newsUseCase = newsUseCase
+        self.photoLoader = downloader
+        self.news = newsDetail
+    }
+    
+    
+    //MARK:- Fetch comments and Likes
+    
+    func downloadDetails(){
+        let dispatchGroup = DispatchGroup()
+
+        dispatchGroup.enter()
+        if let newsEndPoint = NewsEndPoint(self.likeUrl) {
+             self.newsUseCase.executeLikes(newsEndPoint) { [weak self](result) in
+                 switch result {
+                 case .success(let like):
+                  self?.likeCount = like.likes ?? 0
+                 case .failure(let error):
+                     print(error)
+                 }
+                DispatchQueue.main.async {
+                    dispatchGroup.leave()
                 }
-            }
-    }
-    
-    //MARK:- Fetch likes
+             }
+         }
 
-    func fetchlikes(){
-       self.newsRepository.getLikesCount { [weak self](like) in
-                  if let data = self?.news{
-                      data.like = like
-                      self?.newsDataSource.value = self?.createDetailDataSource(newsList: [data])
-                  }
-              }
-        
-    }
-    
-    func showData(){
-        if let news = self.news{
-            self.newsDataSource.value = self.createDetailDataSource(newsList: [news])
+        dispatchGroup.enter()
+        if let newsEndPoint = NewsEndPoint(self.commentUrl) {
+                      self.newsUseCase.executeComment(newsEndPoint) { [weak self](result) in
+                          switch result {
+                          case .success(let comment):
+                              self?.commentCount = comment.comments ?? 0
+                          case .failure(let error):
+                              print(error)
+                          }
+                        DispatchQueue.main.async {
+                            dispatchGroup.leave()
+                        }
+                      }
+        }
+
+        dispatchGroup.notify(queue: .main) {
+             self.newsDataSource.value = self.createDetailDataSource()
+             self.isLoader.value = false
         }
     }
-    func createDetailDataSource(newsList: [News])-> [NewsDetailDataSource]{
+    
+    func createDetailDataSource()-> [NewsDetailDataSource]{
         var newsDataSource = [NewsDetailDataSource]()
-          for news in newsList {
-            if let _ = news.urlToImage{
-                newsDataSource.append(ImageTableCellViewModel(newsModel: news))
+        
+            if let url = news.urlToImage{
+                let photosRecord = PhotoRecord(urlStr: url)
+                newsDataSource.append(ImageTableCellViewModel(photosRecord: photosRecord, downloader: self.photoLoader, news: news))
             }
-            if let _ = news.comment{
-                newsDataSource.append(AditionalInfoTableCellViewModel(newsModel: news))
+           newsDataSource.append(AditionalInfoTableCellViewModel(like:likeCount, comment:commentCount, news: self.news))
+            if let _ = news.title{
+                newsDataSource.append(DescriptionTablleCellViewModel(news: news))
             }
-            if let _ = news.description{
-                newsDataSource.append(DescriptionTablleCellViewModel(newsModel: news))
-            }
-          }
           return newsDataSource
       }
+
 }

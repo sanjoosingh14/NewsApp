@@ -1,18 +1,21 @@
 
 import UIKit
 
-class NewsDetialViewController: UIViewController {
-    var viewModel:NewsDetailViewModel?
+class NewsDetialViewController: UIViewController, ViewModelBased {
 
+    typealias ViewModel = NewsDetailViewModel
+    var viewModel: NewsDetailViewModel?
+    weak var delegate: NewsDetailCoordinator?
+    
     @IBOutlet weak var tableview_detail: UITableView!
+    @IBOutlet weak var loader_view: UIActivityIndicatorView!
+
     override func viewDidLoad() {
+        
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        self.setUpTableViewCell()
         self.startBinding()
-        self.viewModel?.showData()
-        self.viewModel?.fetchcomments()
-        self.viewModel?.fetchlikes()
+        self.viewModel?.downloadDetails()
     }
     
     
@@ -26,8 +29,18 @@ class NewsDetialViewController: UIViewController {
     }
     
     func startBinding() {
+        viewModel?.isLoader.addObserver(fireNow: true, {[weak self](val) in
+             if val {
+                 self?.loader_view.startAnimating()
+             }else{
+                 self?.loader_view.stopAnimating()
+             }
+         })
+        self.setUpTableViewCell()
         viewModel?.newsDataSource.addObserver({ [weak self] _ in
-            self?.tableview_detail?.reloadData()
+           DispatchQueue.main.async {
+                self?.tableview_detail?.reloadData()
+            }
         })
     }
 }
@@ -72,4 +85,3 @@ extension NewsDetialViewController: UITableViewDelegate{
         
     }
 }
-

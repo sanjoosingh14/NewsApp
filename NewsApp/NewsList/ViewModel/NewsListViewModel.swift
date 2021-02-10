@@ -4,24 +4,18 @@ import UIKit
 
 enum newsListCellType {
     case image
-    case video
 }
 
 enum clickEventType: String {
     case image
-    case video
 }
 
-protocol NewsListDataSource {
+protocol NewsCellDataSource {
     var cellType: newsListCellType { get }
     var cellIdentifier: String { get }
     var newsModel: News { get }
     func getheightOfCell(tableViewWidth: CGFloat) -> CGFloat
-    func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath, actionDelegate: cellActionDelegate?) -> UITableViewCell
-}
-
-protocol cellActionDelegate: AnyObject{
-    func clickAction(with type: clickEventType, and newsData: News?)
+    func cellForTableView(tableView: UITableView, atIndexPath indexPath: IndexPath) -> UITableViewCell
 }
 
 protocol CellConfigurable {
@@ -30,40 +24,55 @@ protocol CellConfigurable {
     func configureCellWithModel(_: cellViewModel)
 }
 
-class NewsListViewModel{
-    let newsRepository: NewsRepository
-    var newsDataSource = Observable<[NewsListDataSource]?>(value: [])
+protocol NewsViewModelInput {
+    func fetchArticles()
+}
 
-    init( newsRepository: NewsRepository = NewsRepositoryImp()) {
-        self.newsRepository = newsRepository
+protocol NewsViewModelOutput {
+    var news: Observable<[NewsCellDataSource]> { get }
+    var isLoader: Observable<Bool> { get }
+}
+
+protocol NewsListPViewModel: NewsViewModelInput, NewsViewModelOutput {}
+
+class NewsListViewModel:NewsListPViewModel{
+    
+    var isLoader = Observable<Bool>(value: true)
+    var news = Observable<[NewsCellDataSource]>(value: [])
+    private let newApiURl = "https://newsapi.org/v2/top-headlines?country=us&apiKey=2ed7996e7c844109abdca49cd1623719"
+    private let photoLoader: PhotoDownloader
+    private let newUseCase: NewsListUseCase
+    
+    init(_ newUseCase: NewsListUseCase, downloader: PhotoDownloader) {
+        self.newUseCase = newUseCase
+        self.photoLoader = downloader
     }
     
-    //MARK:- Fetch news
-
-    func fetchNewsFromApi(){
-            self.newsRepository.fetchNews { [weak self](news) in
-                if let data = news{
-                    self?.newsDataSource.value = self?.createNewsDataSource(newsList: data)
+    func fetchArticles() {
+        if let newsEndPoint = NewsEndPoint(self.newApiURl) {
+            self.newUseCase.execute(newsEndPoint) { [weak self](result) in
+                switch result {
+                case .success(let newsModel):
+                    self?.getAllNewsPhotoUrls(newsModel: newsModel)
+                case .failure(let error):
+                    print(error)
                 }
             }
-        
+        }
     }
     
-    func createNewsDataSource(newsList: [News])-> [NewsListDataSource]{
-          var newsDataSource = [NewsListDataSource]()
-          for news in newsList {
-            if let dataSource = makeNewsDataSourceElement(news: news) {
-                newsDataSource.append(dataSource)
+    private func getAllNewsPhotoUrls(newsModel: NewsList){
+        guard let newsList = newsModel.articles else { return }
+        var celldata = [NewsCellDataSource]()
+        for news in newsList {
+            if let url = news.urlToImage{
+                let photosRecord = PhotoRecord(urlStr: url)
+                let cellDataSource = NewsListImageViewModel(photosRecord: photosRecord, downloader: self.photoLoader, news: news)
+                celldata.append(cellDataSource)
             }
-          }
-          return newsDataSource
-      }
-    func makeNewsDataSourceElement(news: News) -> NewsListDataSource? {
-        if let _ = news.urlToImage{
-            return NewsListImageViewModel(newsModel: news)
         }
-        
-        return nil
+        self.isLoader.value = false
+        self.news.value = celldata
     }
-
+    
 }
