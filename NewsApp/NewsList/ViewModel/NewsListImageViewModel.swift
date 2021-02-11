@@ -20,6 +20,9 @@ class NewsListImageViewModel:NewsCellDataSource {
     }
     
     var image = Observable<UIImage?>(value: nil)
+    
+    // MARK:- Initilisation
+
     init(photosRecord: PhotoRecord, downloader: PhotoDownloader, news:News) {
         self.photosRecord = photosRecord
         self.photoLoader = downloader
@@ -36,6 +39,8 @@ class NewsListImageViewModel:NewsCellDataSource {
         }
         return UITableViewCell()
     }
+    
+    // MARK:- Download Image
     func startOperations(at index: Int) {
          switch (photosRecord.state) {
          case .new:

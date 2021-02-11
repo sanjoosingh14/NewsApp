@@ -7,14 +7,17 @@ class DescriptionTablleCellViewModel:NewsDetailDataSource {
         return .description
     }
     
-   var cellIdentifier: String {
+    var cellIdentifier: String {
         return String(describing: DescriptionTableViewCell.self)
     }
-    
     var newsModel: News
+    
+    // MARK:- Initialization
+
     init(news:News) {
         self.newsModel = news
     }
+    
     func getheightOfCell(tableViewWidth: CGFloat) -> CGFloat {
       // return UITableView.automaticDimension
       //  return 600

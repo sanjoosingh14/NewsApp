@@ -48,6 +48,7 @@ class NewsListViewModel:NewsListPViewModel{
         self.photoLoader = downloader
     }
     
+    // MARK:- fetching articles
     func fetchArticles() {
         if let newsEndPoint = NewsEndPoint(self.newApiURl) {
             self.newUseCase.execute(newsEndPoint) { [weak self](result) in

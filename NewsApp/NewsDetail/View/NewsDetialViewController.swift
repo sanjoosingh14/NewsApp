@@ -20,6 +20,7 @@ class NewsDetialViewController: UIViewController, ViewModelBased {
     
     
     //MARK:- Setup Views
+    
     private func setUpTableViewCell(){
         tableview_detail.delegate = self
         tableview_detail.dataSource = self
@@ -27,6 +28,8 @@ class NewsDetialViewController: UIViewController, ViewModelBased {
         tableview_detail.register(AdditionalInfoTableViewCell.self, forCellReuseIdentifier: String(describing: AdditionalInfoTableViewCell.self))
         tableview_detail.register(ImageTableViewCell.self, forCellReuseIdentifier: String(describing: ImageTableViewCell.self))
     }
+    
+    //MARK:- start binding
     
     func startBinding() {
         viewModel?.isLoader.addObserver(fireNow: true, {[weak self](val) in

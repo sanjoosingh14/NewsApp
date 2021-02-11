@@ -17,10 +17,14 @@ class NewsListCoordinator: Coordinator {
             self.router.push(newsListViewCon, isAnimated: true, onNavigateBack: isCompleted, coordinator: String(describing: NewsListCoordinator.self))
         }
     }
-
+    
+    // MARK: open Detial page
+    
     func openNewsDetailScreen(_ dataSource: News){
         let newsDetail = NewsDetailCoordinator(router: self.router, dataSource: dataSource)
         childCoordinators[String(describing: NewsDetailCoordinator.self)] = newsDetail
+      
+        // manage call back after pop or dismiss
         newsDetail.isCompleted = { [weak self] coordinator in
             guard let self = self, let coordinator = coordinator else { return }
             self.childCoordinators.removeValue(forKey: coordinator)

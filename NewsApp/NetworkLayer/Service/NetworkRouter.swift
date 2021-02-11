@@ -35,35 +35,6 @@ class NetworkRouter: NetworkRouterProtocol {
                                  timeoutInterval: 10.0)
         
         request.httpMethod = route.httpMethod.rawValue
-        //route.baseURL.appendingPathComponent(route.path)
-        /*do {
-            switch route.task {
-            case .request:
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-            case .requestParameters(let bodyParameters,
-                                    let bodyEncoding,
-                                    let urlParameters):
-                
-                try self.configureParameters(bodyParameters: bodyParameters,
-                                             bodyEncoding: bodyEncoding,
-                                             urlParameters: urlParameters,
-                                             request: &request)
-                
-            case .requestParametersAndHeaders(let bodyParameters,
-                                              let bodyEncoding,
-                                              let urlParameters,
-                                              let additionalHeaders):
-                
-                self.addAdditionalHeaders(additionalHeaders, request: &request)
-                try self.configureParameters(bodyParameters: bodyParameters,
-                                             bodyEncoding: bodyEncoding,
-                                             urlParameters: urlParameters,
-                                             request: &request)
-            }
-            return request
-        } catch {
-            throw error
-        }*/
         return request
     }
     

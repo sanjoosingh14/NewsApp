@@ -11,6 +11,8 @@ class NewsDetailRepository: NewsDetailRepositoryProtocol {
     init(_ router: NetworkRouterProtocol) {
         self.router = router
     }
+    // MARK:- fetching likes
+
     func fetchLikes(_ request: EndPointType, completion: @escaping (Result<Like, NetworkError>) -> ()) {
         NetworkOperation<Like>().execute(self.router, request) { (touple) in
             if let like = touple.0 {
@@ -22,6 +24,7 @@ class NewsDetailRepository: NewsDetailRepositoryProtocol {
             }
         }
     }
+    // MARK:- fetching comments
     
     func fetchComment(_ request: EndPointType, completion: @escaping (Result<Comment, NetworkError>) -> ()) {
           NetworkOperation<Comment>().execute(self.router, request) { (touple) in
